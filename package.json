@@ -1,6 +1,6 @@
 {
   "name": "nodejs-encyclopedia-project",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "This is the backend for my encyclopedia project.",
   "main": "server.js",
   "scripts": {
