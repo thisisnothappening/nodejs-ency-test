@@ -25,15 +25,20 @@ pipeline {
                 branch 'main'
             }
 			steps {
-			    withCredentials([
-			        string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
-			        ]) {
-			        sh "docker build -t nodejs-encyclopedia-project:latest -f Dockerfile.start ."
-			        sh "docker tag nodejs-encyclopedia-project:latest thisisnothappening/nodejs-encyclopedia-project:latest"
-			        sh 'docker login --username thisisnothappening --password $DOCKER_PASSWORD'
-			        sh "docker push thisisnothappening/nodejs-encyclopedia-project:latest"
-			        sh "docker image prune -f"
-			    }
+				script {
+					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+					withCredentials([
+						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
+						]) {
+						sh "docker build -t nodejs-encyclopedia-project:latest -f Dockerfile.start ."
+						sh "docker tag nodejs-encyclopedia-project:latest thisisnothappening/nodejs-encyclopedia-project:latest"
+						sh "docker tag nodejs-encyclopedia-project:latest thisisnothappening/nodejs-encyclopedia-project:${version}"
+						sh 'docker login --username thisisnothappening --password $DOCKER_PASSWORD'
+						sh "docker push thisisnothappening/nodejs-encyclopedia-project:latest"
+						sh "docker push thisisnothappening/nodejs-encyclopedia-project:${version}"
+						sh "docker image prune -f"
+					}
+				}
 			}
 		}
 		stage("Deploy") {

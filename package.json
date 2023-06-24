@@ -1,11 +1,11 @@
 {
   "name": "nodejs-encyclopedia-project",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is the backend for my encyclopedia project.",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-	"reset": "node config/articleReader.js",
+    "reset": "node config/articleReader.js",
     "test": "jest"
   },
   "author": "Negoiu Paul | thisisnothappening",
