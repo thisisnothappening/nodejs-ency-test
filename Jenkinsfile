@@ -26,7 +26,7 @@ pipeline {
             }
 			steps {
 				script {
-					def version = sh(script: "git describe --tags --abbrev=0 --match 'v*' | cut -c2-", returnStdout: true).trim()
+					def version = sh(script: "git tag", returnStdout: true).trim()
 					echo "Your version is ${version}"
 					def userInput = input(
 						id: 'userInput',
