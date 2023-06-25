@@ -26,7 +26,7 @@ pipeline {
             }
 			steps {
 				script {
-					def version = sh "git tag"
+					def version = script "git tag"
 					echo "Your version is ${version}"
 					def userInput = input(
 						id: 'userInput',
