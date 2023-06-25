@@ -30,11 +30,14 @@ pipeline {
 					def userInput = input(
 						id: 'userInput',
 						message: "The Docker image tag will be: ${version}",
-						parameters: [
-							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
-						]
+						parameters: {
+							string(name: 'PREFERRED', defaultValue: '')
+						}
 					)
-					def preferredVersion = userInput['Preferred Version']
+					def preferredVersion = parameters.PREFERRED
+					if (!preferredVersion.isEmpty()) {
+						version = preferredVersion
+					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
