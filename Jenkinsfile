@@ -29,20 +29,14 @@ pipeline {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def userInput = input(
 						id: 'userInput',
-						message: "Is '${version}' the version you want to use?",
+						message: "The Docker image tag will be: ${version}",
 						parameters: [
-							[$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Confirm Version'],
 							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
 						]
 					)
-					def confirmVersion = userInput['Confirm Version']
 					def preferredVersion = userInput['Preferred Version']
-					if (confirmVersion) {
-						if (!preferredVersion.isEmpty()) {
-							version = preferredVersion
-						}
-					} else {
-						error('Version not confirmed by user')
+					if (!preferredVersion.isEmpty()) {
+						version = preferredVersion
 					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
