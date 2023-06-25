@@ -41,7 +41,7 @@ pipeline {
                             booleanParam(name: 'Confirmation', defaultValue: false)
                         ]
                     )
-					if (!confirmation.Confirmation) {
+					if (!confirmation) {
                         error("Version bump not confirmed. Pipeline aborted.")
                     }
 					echo "Version bump: ${userInput}"
