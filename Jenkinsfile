@@ -27,6 +27,13 @@ pipeline {
 			steps {
 				script {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+					def userInput = input(
+						id: 'userInput',
+						message: 'The Docker image tag will be: ${version}',
+						parameters: [
+							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
+						]
+					)
 					echo "Your version is: ${version}"
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
