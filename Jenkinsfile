@@ -26,14 +26,14 @@ pipeline {
             }
 			steps {
 				script {
-					def version = sh(script: "git describe --tags --abbrev=0 --match 'v*' | cut -c2-", returnStdout: true)
+					def version = sh(script: "git describe --tags --abbrev=0 --match 'v*' | cut -c2-").trim()
 					def userInput = input(
 						id: 'userInput',
 						message: "Is '${version}' the version you want to use?",
 						parameters: [
-							[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Stop the pipeline', name: 'Stop Pipeline'],
-							[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Confirm the version', name: 'Confirm Version'],
-							[$class: 'TextParameterDefinition', defaultValue: '', description: 'Preferred version', name: 'Preferred Version']
+							[$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Stop Pipeline'],
+							[$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Confirm Version'],
+							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
 						]
 					)
 
