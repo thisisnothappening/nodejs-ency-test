@@ -29,7 +29,7 @@ pipeline {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def userInput = input(
 						id: 'userInput',
-						message: "The Docker image tag will be: ${version}",
+						message: 'The Docker image tag will be: ${version}',
 						parameters: [
 							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
 						]
