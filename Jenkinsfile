@@ -26,6 +26,8 @@ pipeline {
             }
 			steps {
 				script {
+					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+					echo "Your version is: ${version}"
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
