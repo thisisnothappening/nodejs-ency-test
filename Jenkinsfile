@@ -26,26 +26,34 @@ pipeline {
             }
 			steps {
 				script {
+					def version = sh(script: "git describe --tags --abbrev=0 --match 'v*' | cut -c2-", returnStdout: true).trim()
 					def userInput = input(
-                        message: 'Select a version bump:',
-                        parameters: [
-                            choice(name: 'VersionBump', choices: ['major', 'minor', 'patch'])
-                        ]
-                    )
-					if (userInput != 'major' && userInput != 'minor' && userInput != 'patch') {
-                        error("Invalid version bump selected. Pipeline aborted.")
-                    }
-					def confirmation = input(
-                        message: "Are you sure you want to bump the version to ${userInput}?",
-                        parameters: [
-                            booleanParam(name: 'Confirmation', defaultValue: false)
-                        ]
-                    )
-					if (!confirmation) {
-                        error("Version bump not confirmed. Pipeline aborted.")
-                    }
-					echo "Version bump: ${userInput}"
-					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+						id: 'userInput',
+						message: "Is '${version}' the version you want to use?",
+						parameters: [
+							[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Stop the pipeline', name: 'Stop Pipeline'],
+							[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Confirm the version', name: 'Confirm Version'],
+							[$class: 'TextParameterDefinition', defaultValue: '', description: 'Preferred version', name: 'Preferred Version']
+						]
+					)
+
+					def stopPipeline = userInput['Stop Pipeline']
+					def confirmVersion = userInput['Confirm Version']
+					def preferredVersion = userInput['Preferred Version']
+
+					if (stopPipeline) {
+						error('Pipeline stopped by user')
+					}
+
+					if (confirmVersion) {
+						if (!preferredVersion.isEmpty()) {
+							version = preferredVersion
+						}
+					} else {
+						error('Version not confirmed by user')
+					}
+					echo "Your version is ${version}"
+					error('Remove this later')
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
