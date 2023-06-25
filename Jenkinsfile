@@ -34,6 +34,7 @@ pipeline {
 							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
 						]
 					)
+					def preferredVersion = userInput['Preferred Version']
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
