@@ -26,7 +26,7 @@ pipeline {
             }
 			steps {
 				script {
-					def version = script "git tag"
+					def version = sh(script: "docker ps", returnStdout: true).trim()
 					echo "Your version is ${version}"
 					def userInput = input(
 						id: 'userInput',
