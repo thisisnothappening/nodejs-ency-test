@@ -29,22 +29,22 @@ pipeline {
 					def userInput = input(
                         message: 'Select a version bump:',
                         parameters: [
-                            choice(name: 'VersionBump', choices: ['major', 'minor', 'patch'], description: '')
+                            choice(name: 'VersionBump', choices: ['major', 'minor', 'patch'])
                         ]
                     )
-					if (userInput.VersionBump != 'major' && userInput.VersionBump != 'minor' && userInput.VersionBump != 'patch') {
+					if (userInput != 'major' && userInput != 'minor' && userInput != 'patch') {
                         error("Invalid version bump selected. Pipeline aborted.")
                     }
 					def confirmation = input(
-                        message: "Are you sure you want to bump the version to ${userInput.VersionBump}?",
+                        message: "Are you sure you want to bump the version to ${userInput}?",
                         parameters: [
-                            booleanParam(name: 'Confirmation', defaultValue: false, description: '')
+                            booleanParam(name: 'Confirmation', defaultValue: false)
                         ]
                     )
 					if (!confirmation.Confirmation) {
                         error("Version bump not confirmed. Pipeline aborted.")
                     }
-					echo "Version bump: ${userInput.VersionBump}"
+					echo "Version bump: ${userInput}"
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
