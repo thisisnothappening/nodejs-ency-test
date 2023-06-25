@@ -26,26 +26,17 @@ pipeline {
             }
 			steps {
 				script {
-					def version = sh(script: "docker ps", returnStdout: true).trim()
-					echo "Your version is ${version}"
+					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def userInput = input(
 						id: 'userInput',
 						message: "Is '${version}' the version you want to use?",
 						parameters: [
-							[$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Stop Pipeline'],
 							[$class: 'BooleanParameterDefinition', defaultValue: false, name: 'Confirm Version'],
 							[$class: 'TextParameterDefinition', defaultValue: '', name: 'Preferred Version']
 						]
 					)
-
-					def stopPipeline = userInput['Stop Pipeline']
 					def confirmVersion = userInput['Confirm Version']
 					def preferredVersion = userInput['Preferred Version']
-
-					if (stopPipeline) {
-						error('Pipeline stopped by user')
-					}
-
 					if (confirmVersion) {
 						if (!preferredVersion.isEmpty()) {
 							version = preferredVersion
@@ -53,8 +44,6 @@ pipeline {
 					} else {
 						error('Version not confirmed by user')
 					}
-					echo "Your version is ${version}"
-					error('Remove this later')
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
