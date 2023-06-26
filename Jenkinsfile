@@ -31,7 +31,7 @@ pipeline {
 						id: 'userInput',
 						message: "The Docker image tag will be: ${version}",
 						parameters: [
-							string(name: 'PREFERRED', defaultValue: '')
+							string(name: 'Preferred version:', defaultValue: '')
 						]
 					)
 					def preferredVersion = userInput
