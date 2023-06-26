@@ -34,7 +34,7 @@ pipeline {
 							string(name: 'PREFERRED', defaultValue: '')
 						]
 					)
-					def preferredVersion = userInput.PREFERRED
+					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
 					}
