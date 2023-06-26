@@ -72,6 +72,13 @@ pipeline {
                     '''
 				}
 		    }
+			post {
+				success {
+					emailext body: "Your app has been deployed! \uD83D\uDE03",
+							subject: "Deployment Notification",
+							to: "negoiupaulica21@gmail.com"
+				}
+    		}
 		}
 	}
 }
