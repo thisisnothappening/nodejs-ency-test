@@ -28,10 +28,15 @@ pipeline {
 				script {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def exists = {
-						def processBuilder = new ProcessBuilder("curl", "--silent", "-f", "--head", "-lL", "https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/")
-						def process = processBuilder.start()
-						process.waitFor()
-						return process.exitValue() == 0
+						def url = new URL("https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/")
+						try {
+							def connection = url.openConnection()
+							connection.setRequestMethod("HEAD")
+							connection.connect()
+							return connection.responseCode == 200
+						} catch (Exception e) {
+							return false
+						}
 					}
 					def userInput
 					if (exists()) {
