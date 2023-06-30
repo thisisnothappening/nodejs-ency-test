@@ -69,20 +69,20 @@ pipeline {
                     '''
 				}
 		    }
-			post {
-				failure {
-					emailext subject: "Pipeline Failed: ${env.JOB_NAME}",
-							to: "negoiupaulica21@gmail.com",
-							body: "The Jenkins pipeline ${env.JOB_NAME} has failed.",
-							attachLog: true
-				}
-				success {
-					emailext subject: "Deployment Notification",
-							to: "negoiupaulica21@gmail.com",
-							body: "Your app has been deployed!",
-							attachLog: true
-				}
-			}
+		}
+	}
+	post {
+		failure {
+			emailext subject: "Pipeline Failed: ${env.JOB_NAME}",
+					to: "negoiupaulica21@gmail.com",
+					body: "The Jenkins pipeline ${env.JOB_NAME} has failed.",
+					attachLog: true
+		}
+		success {
+			emailext subject: "Deployment Notification",
+					to: "negoiupaulica21@gmail.com",
+					body: "Your app has been deployed!",
+					attachLog: true
 		}
 	}
 }
