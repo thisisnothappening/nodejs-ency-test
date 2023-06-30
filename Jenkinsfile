@@ -78,9 +78,9 @@ pipeline {
 					attachLog: true
 		}
 		success {
-			emailext subject: "Deployment Notification",
+			emailext subject: "Pipeline Success: ${env.JOB_NAME}",
 					to: "negoiupaulica21@gmail.com",
-					body: "Your app has been deployed!",
+					body: "Your Docker image with tag '${version}' has been deployed!",
 					attachLog: true
 		}
 	}
