@@ -36,7 +36,7 @@ pipeline {
 						// error("An image with the tag '${version}' already exists")
 						message = "An image with the tag '${version}' already exists. Are you sure you want to override the existing version?"
 					}
-					timeout(time: 3, unit: 'MINUTES') {
+					timeout(time: 1, unit: 'MINUTES') {
 						def userInput = input(
 							id: 'userInput',
 							message: message,
