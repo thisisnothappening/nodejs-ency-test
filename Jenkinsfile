@@ -48,7 +48,7 @@ pipeline {
 					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
-						if (exists()) { // prblem here!!
+						if (exists()) {
 							error("An image with the tag '${version}' already exists")
 						}
 					}
