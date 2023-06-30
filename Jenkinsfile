@@ -11,7 +11,6 @@ pipeline {
 	stages {
 		stage("Build") {
 			steps {
-				sh "sdgfhjsrg" // this is for testing failure email
 				sh "npm install"
 			}
 		}
