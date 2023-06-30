@@ -36,14 +36,15 @@ pipeline {
 						// error("An image with the tag '${version}' already exists")
 						message = "An image with the tag '${version}' already exists. Are you sure you want to override the existing version?"
 					}
-					def userInput = input(
-						id: 'userInput',
-						message: message,
-						parameters: [
-							string(name: 'Preferred version:', defaultValue: '', description: 'Leave this field empty if you want to keep the default tag.')
-						],
-						timeout: 1 // minute
-					)
+					timeout(time: 3, unit: 'MINUTES') {
+						def userInput = input(
+							id: 'userInput',
+							message: message,
+							parameters: [
+								string(name: 'Preferred version:', defaultValue: '', description: 'Leave this field empty if you want to keep the default tag.')
+							]
+						)
+					}
 					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
