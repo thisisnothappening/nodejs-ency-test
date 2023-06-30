@@ -86,14 +86,17 @@ pipeline {
                     '''
 				}
 		    }
-			// this doesn't work:
-			post {
-				success {
-					emailext body: "Your app has been deployed! \uD83D\uDE03",
-							subject: "Deployment Notification",
-							to: "negoiupaulica21@gmail.com"
-				}
-    		}
+		}
+		stage("Send Email") {
+			when {
+                branch 'main'
+            }
+			steps {
+				emailext body: "Your app has been deployed! \uD83D\uDE03",
+						subject: "Deployment Notification",
+						to: "negoiupaulica21@gmail.com",
+						attachLog: true
+			}
 		}
 	}
 }
