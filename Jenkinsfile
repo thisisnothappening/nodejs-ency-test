@@ -33,7 +33,6 @@ pipeline {
 					}
 					def message = "The Docker image tag will be: ${version}"
 					if (exists()) {
-						// error("An image with the tag '${version}' already exists")
 						message = "An image with the tag '${version}' already exists. Are you sure you want to override the existing version?"
 					}
 					def userInput
@@ -49,6 +48,9 @@ pipeline {
 					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
+					}
+					if (exists()) {
+						error("An image with the tag '${version}' already exists")
 					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
