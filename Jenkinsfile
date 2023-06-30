@@ -28,15 +28,8 @@ pipeline {
 				script {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def exists = {
-						def url = new URL("https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/")
-						try {
-							def connection = url.openConnection()
-							connection.setRequestMethod("HEAD")
-							connection.connect()
-							return connection.responseCode == 200
-						} catch (Exception e) {
-							return false
-						}
+						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/", returnStatus: true)
+						return result == 0
 					}
 					def userInput
 					if (exists()) {
