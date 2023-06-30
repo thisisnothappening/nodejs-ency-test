@@ -48,9 +48,9 @@ pipeline {
 					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
-					}
-					if (exists()) {
-						error("An image with the tag '${version}' already exists")
+						if (exists()) { // prblem here!!
+							error("An image with the tag '${version}' already exists")
+						}
 					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
