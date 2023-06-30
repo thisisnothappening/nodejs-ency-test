@@ -27,13 +27,30 @@ pipeline {
 			steps {
 				script {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
-					def userInput = input(
-						id: 'userInput',
-						message: "The Docker image tag will be: ${version}",
-						parameters: [
-							string(name: 'Preferred version:', defaultValue: '')
-						]
-					)
+					def exists() {
+						def process = "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/".execute()
+						process.waitFor()
+						return process.exitValue() == 0
+					}
+					def userInput
+					if (exists()) {
+						// error("An image with the tag '${version}' already exists")
+						userInput = input(
+							id: 'userInput',
+							message: "An image with the tag '${version}' already exists. Are you sure you want to override the existing version?",
+							parameters: [
+								string(name: 'Preferred version:', defaultValue: '', description: 'Leave this field empty if you want to keep the default tag.')
+							]
+						)
+					} else {
+						userInput = input(
+							id: 'userInput',
+							message: "The Docker image tag will be: ${version}",
+							parameters: [
+								string(name: 'Preferred version:', defaultValue: '', description: 'Leave this field empty if you want to keep the default tag.')
+							]
+						)
+					}
 					def preferredVersion = userInput
 					if (!preferredVersion.isEmpty()) {
 						version = preferredVersion
@@ -72,6 +89,7 @@ pipeline {
                     '''
 				}
 		    }
+			// this doesn't work:
 			post {
 				success {
 					emailext body: "Your app has been deployed! \uD83D\uDE03",
