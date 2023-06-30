@@ -31,26 +31,8 @@ pipeline {
 						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/", returnStatus: true)
 						return result == 0
 					}
-					def message = "The Docker image tag will be: ${version}"
 					if (exists()) {
-						message = "An image with the tag '${version}' already exists. Are you sure you want to override the existing version?"
-					}
-					def userInput
-					timeout(time: 1, unit: 'MINUTES') {
-						userInput = input(
-							id: 'userInput',
-							message: message,
-							parameters: [
-								string(name: 'Preferred version:', defaultValue: '', description: 'Leave this field empty if you want to keep the default tag.')
-							]
-						)
-					}
-					def preferredVersion = userInput
-					if (!preferredVersion.isEmpty()) {
-						version = preferredVersion
-						if (exists()) {
-							error("An image with the tag '${version}' already exists")
-						}
+						error("An image with the tag '${version}' already exists")
 					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
