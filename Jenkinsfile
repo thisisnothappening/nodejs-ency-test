@@ -74,7 +74,7 @@ pipeline {
                 branch 'main'
             }
 			steps {
-				emailext body: "Your app has been deployed! \uD83D\uDE03",
+				emailext body: "Your app has been deployed!",
 						subject: "Deployment Notification",
 						to: "negoiupaulica21@gmail.com",
 						attachLog: true
