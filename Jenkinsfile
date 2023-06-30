@@ -27,7 +27,7 @@ pipeline {
 			steps {
 				script {
 					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
-					def exists() {
+					def exists = {
 						def process = "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/".execute()
 						process.waitFor()
 						return process.exitValue() == 0
