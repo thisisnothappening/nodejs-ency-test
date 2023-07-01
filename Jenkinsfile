@@ -17,6 +17,7 @@ pipeline {
 		stage("Build") {
 			steps {
 				sh "npm install"
+				sh "sdgngdnegrh"
 			}
 		}
 		stage("Test") {
@@ -83,7 +84,7 @@ pipeline {
 					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed. \uD83D\uDE2D"
 		}
 		success {
-			emailext subject: "Pipeline Success \u2728 \uD83C\uDF08",
+			emailext subject: "Pipeline Success \uD83C\uDF08 \u2728",
 					to: "negoiupaulica21@gmail.com",
 					attachLog: true,
 					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
