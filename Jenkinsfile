@@ -80,13 +80,13 @@ pipeline {
 			emailext subject: "Pipeline Failed",
 					to: "negoiupaulica21@gmail.com",
 					attachLog: true,
-					body: "Build Tag: ${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed."
+					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed."
 		}
 		success {
 			emailext subject: "Pipeline Success",
 					to: "negoiupaulica21@gmail.com",
 					attachLog: true,
-					body: "Build Tag: ${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed!"
+					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed!"
 		}
 	}
 }
