@@ -42,14 +42,13 @@ pipeline {
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
-						docker.build("${DOCKER_IMAGE}:latest", "-f Dockerfile.start .")
-						docker.image("${DOCKER_IMAGE}:latest").tag("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest")
-      					docker.image("${DOCKER_IMAGE}:latest").tag("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}")
-						docker.withRegistry('https://hub.docker.com/v2', "${DOCKER_REGISTRY}", "${DOCKER_PASSWORD}") {
-							docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest").push()
-							docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}").push()
-						}
-						docker.image.prune(force: true)
+						sh "docker build -t ${DOCKER_IMAGE}:latest -f Dockerfile.start ."
+						sh "docker tag ${DOCKER_IMAGE}:latest ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest"
+						sh "docker tag ${DOCKER_IMAGE}:latest ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}"
+						sh 'docker login --username $DOCKER_REGISTRY --password $DOCKER_PASSWORD'
+						sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest"
+						sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}"
+						sh "docker image prune -f"
 					}
 				}
 			}
