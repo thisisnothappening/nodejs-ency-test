@@ -8,7 +8,11 @@ pipeline {
 		// this means once per minute. Change it later to once per 5 mins, or more
 		pollSCM "* * * * *"
 	}
-	def version
+	environment {
+        DOCKER_IMAGE = 'nodejs-encyclopedia-project'
+        DOCKER_REGISTRY = 'thisisnothappening'
+        version = ''
+    }
 	stages {
 		stage("Build") {
 			steps {
@@ -38,13 +42,14 @@ pipeline {
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
-						sh "docker build -t nodejs-encyclopedia-project:latest -f Dockerfile.start ."
-						sh "docker tag nodejs-encyclopedia-project:latest thisisnothappening/nodejs-encyclopedia-project:latest"
-						sh "docker tag nodejs-encyclopedia-project:latest thisisnothappening/nodejs-encyclopedia-project:${version}"
-						sh 'docker login --username thisisnothappening --password $DOCKER_PASSWORD'
-						sh "docker push thisisnothappening/nodejs-encyclopedia-project:latest"
-						sh "docker push thisisnothappening/nodejs-encyclopedia-project:${version}"
-						sh "docker image prune -f"
+						docker.build("${DOCKER_IMAGE}:latest", "-f Dockerfile.start .")
+						docker.image("${DOCKER_IMAGE}:latest").tag("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest")
+      					docker.image("${DOCKER_IMAGE}:latest").tag("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}")
+						docker.withRegistry('https://hub.docker.com/v2', "${DOCKER_REGISTRY}", "${DOCKER_PASSWORD}") {
+							docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest").push()
+							docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}").push()
+						}
+						docker.image.prune(force: true)
 					}
 				}
 			}
