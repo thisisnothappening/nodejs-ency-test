@@ -17,7 +17,6 @@ pipeline {
 		stage("Build") {
 			steps {
 				sh "npm install"
-				sh "sdgngdnegrh"
 			}
 		}
 		stage("Test") {
