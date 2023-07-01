@@ -8,6 +8,7 @@ pipeline {
 		// this means once per minute. Change it later to once per 5 mins, or more
 		pollSCM "* * * * *"
 	}
+	def version
 	stages {
 		stage("Build") {
 			steps {
@@ -26,7 +27,7 @@ pipeline {
             }
 			steps {
 				script {
-					def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+					version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def exists = {
 						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/", returnStatus: true)
 						return result == 0
