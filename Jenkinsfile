@@ -33,11 +33,11 @@ pipeline {
 				script {
 					version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 					def exists = {
-						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/thisisnothappening/nodejs-encyclopedia-project/tags/${version}/", returnStatus: true)
+						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REGISTRY}/${DOCKER_IMAGE}/tags/${version}/", returnStatus: true)
 						return result == 0
 					}
 					if (exists()) {
-						error("An image with the tag '${version}' already exists")
+						error("An image with the tag '${version}' already exists. Please run `npm version [major/minor/patch]`, then commit and push to GitHub.")
 					}
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
@@ -77,16 +77,20 @@ pipeline {
 	}
 	post {
 		failure {
-			emailext subject: "Pipeline Failed: ${env.JOB_NAME}",
+			emailext subject: "Pipeline Failed",
 					to: "negoiupaulica21@gmail.com",
-					body: "The Jenkins pipeline ${env.JOB_NAME} has failed.",
-					attachLog: true
+					attachLog: true,
+					body: '''<p>Build Tag: ${env.BUILD_TAG}</p>
+					<p>The Jenkins pipeline has failed.</p>
+                	'''
 		}
 		success {
-			emailext subject: "Pipeline Success: ${env.JOB_NAME}",
+			emailext subject: "Pipeline Success",
 					to: "negoiupaulica21@gmail.com",
-					body: "Your Docker image with tag '${version}' has been deployed!",
-					attachLog: true
+					attachLog: true,
+					body: '''<p>Build Tag: ${env.BUILD_TAG}</p>
+					<p>Your Docker image with tag '${version}' has been deployed!</p>
+                	'''
 		}
 	}
 }
