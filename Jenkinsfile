@@ -23,6 +23,7 @@ pipeline {
 			steps {
 				sh "npm test"
 				sh "java -jar /apache-jmeter-5.5/bin/ApacheJMeter.jar -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
+				sh "mv results.jtl report-output"
 			}
 		}
 		stage("Push Image") {
