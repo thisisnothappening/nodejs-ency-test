@@ -22,7 +22,7 @@ pipeline {
 		stage("Test") {
 			steps {
 				sh "npm test"
-				// add a JMeter test ?
+				sh "java -jar /jmeter/ApacheJMeter.jar -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
 			}
 		}
 		stage("Push Image") {
@@ -36,9 +36,9 @@ pipeline {
 						def result = sh(script: "curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REGISTRY}/${DOCKER_IMAGE}/tags/${version}/", returnStatus: true)
 						return result == 0
 					}
-					if (exists()) {
-						error("An image with the tag '${version}' already exists. Please run `npm version [major/minor/patch]`, then commit and push to GitHub.")
-					}
+					// if (exists()) {
+					// 	error("An image with the tag '${version}' already exists. Please run `npm version [major/minor/patch]`, then commit and push to GitHub.")
+					// }
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
@@ -75,18 +75,18 @@ pipeline {
 		    }
 		}
 	}
-	post {
-		failure {
-			emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
-					to: "negoiupaulica21@gmail.com",
-					attachLog: true,
-					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed. \uD83D\uDE2D"
-		}
-		success {
-			emailext subject: "Pipeline Success \uD83C\uDF08 \u2728",
-					to: "negoiupaulica21@gmail.com",
-					attachLog: true,
-					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
-		}
-	}
+	// post {
+	// 	failure {
+	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
+	// 				to: "negoiupaulica21@gmail.com",
+	// 				attachLog: true,
+	// 				body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed. \uD83D\uDE2D"
+	// 	}
+	// 	success {
+	// 		emailext subject: "Pipeline Success \uD83C\uDF08 \u2728",
+	// 				to: "negoiupaulica21@gmail.com",
+	// 				attachLog: true,
+	// 				body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
+	// 	}
+	// }
 }

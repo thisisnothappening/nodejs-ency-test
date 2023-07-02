@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1000</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET ARTICLES" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/articles</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET CATEGORIES" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/categories</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST-article-and-category" enabled="false">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;name&quot;:&quot;Mario&quot;,&#xd;
+    &quot;category&quot;:&quot;Character&quot;,&#xd;
+    &quot;picture&quot;:&quot;data:image/jpeg;base64,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&quot;,&#xd;
+    &quot;text&quot;:&quot;Mario[e] is a character created by Japanese video game designer Shigeru Miyamoto. He is the title character of the Mario franchise and the mascot of Japanese video game company Nintendo. Mario has appeared in over 200 video games since his creation. Depicted as a short, pudgy, Italian plumber who resides in the Mushroom Kingdom, his adventures generally center on rescuing Princess Peach from the Koopa villain Bowser. Mario has access to a variety of power-ups that give him different abilities. Mario&apos;s fraternal twin brother is Luigi.&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">172.29.22.231</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/articles</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="false">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration" enabled="false">
+          <boolProp name="autocommit">true</boolProp>
+          <stringProp name="checkQuery"></stringProp>
+          <stringProp name="connectionAge">5000</stringProp>
+          <stringProp name="connectionProperties"></stringProp>
+          <stringProp name="dataSource">database</stringProp>
+          <stringProp name="dbUrl">jdbc:mysql://localhost:3307/encyclopedia_test</stringProp>
+          <stringProp name="driver">com.mysql.cj.jdbc.Driver</stringProp>
+          <stringProp name="initQuery"></stringProp>
+          <boolProp name="keepAlive">true</boolProp>
+          <stringProp name="password">admin</stringProp>
+          <stringProp name="poolMax">10</stringProp>
+          <boolProp name="preinit">false</boolProp>
+          <stringProp name="timeout">10000</stringProp>
+          <stringProp name="transactionIsolation">DEFAULT</stringProp>
+          <stringProp name="trimInterval">60000</stringProp>
+          <stringProp name="username">root</stringProp>
+        </JDBCDataSource>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM article;" enabled="false">
+          <stringProp name="dataSource">database</stringProp>
+          <stringProp name="query">SELECT * FROM encyclopedia_test.article;
+</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM category;" enabled="false">
+          <stringProp name="dataSource">database</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">SELECT * FROM encyclopedia_test.category;
+</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
