@@ -21,9 +21,13 @@ pipeline {
 		}
 		stage("Test") {
 			steps {
-				sh "npm test"
-				sh "java -jar /apache-jmeter-5.5/bin/ApacheJMeter.jar -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
-				sh "mv results.jtl report-output"
+				script {
+					sh "npm test"
+					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
+					sh "mv results.jtl report-output"
+					def string = sh(script: "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1", returnStdout: true)
+					sh "aws s3 cp report-output s3://nodejs-ency-jmeter-test-results/report-output-${string} --recursive"
+				}
 			}
 		}
 		stage("Push Image") {
