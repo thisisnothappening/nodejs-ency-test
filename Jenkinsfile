@@ -25,6 +25,16 @@ pipeline {
 					sh "npm test"
 					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
 					sh "mv results.jtl report-output"
+
+					withCredentials([
+						string(credentialsId: 'aws-access-key-id', variable: 'KEY_ID'),
+						string(credentialsId: 'aws-secret-access-key', variable: 'SECRET_KEY')
+						]) {
+						sh 'aws configure set aws_access_key_id $KEY_ID'
+						sh 'aws configure set aws_secret_access_key $SECRET_KEY'
+						sh 'aws configure set region eu-north-1'
+					}
+					
 					def string = sh(script: "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1", returnStdout: true)
 					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${string}/"
 				}
