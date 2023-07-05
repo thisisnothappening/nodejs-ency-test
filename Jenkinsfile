@@ -36,7 +36,7 @@ pipeline {
 					}
 					
 					def string = sh(script: "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1", returnStdout: true)
-					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-stuff/"
+					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/"
 				} // throws an error here (Permission denied)
 			}
 		}
