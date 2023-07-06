@@ -56,7 +56,7 @@ pipeline {
 					withCredentials([
 						string(credentialsId: 'docker-login-password', variable: 'DOCKER_PASSWORD')
 						]) {
-						sh "docker build -t ${DOCKER_IMAGE}:latest -f Dockerfile.start ."
+						sh "docker buildx build -t ${DOCKER_IMAGE}:latest -f Dockerfile.start ."
 						sh "docker tag ${DOCKER_IMAGE}:latest ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest"
 						sh "docker tag ${DOCKER_IMAGE}:latest ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${version}"
 						sh 'docker login --username $DOCKER_REGISTRY --password $DOCKER_PASSWORD'
