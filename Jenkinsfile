@@ -35,7 +35,7 @@ pipeline {
 						sh 'aws configure set region eu-north-1'
 					}
 					
-					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/"
+					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > dev/null"
 				}
 			}
 		}
