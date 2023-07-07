@@ -105,7 +105,6 @@ pipeline {
                 modeOfThreshold: 1, // Use "Error percent" as the mode for threshold comparison
                 modePerformancePerTestCase: true,
                 failBuildIfNoResultFile: true,
-                showFailedBuilds: true
         }
 	// 	failure {
 	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
