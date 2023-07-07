@@ -24,15 +24,6 @@ pipeline {
 				script {
 					sh "npm test"
 					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
-
-					// Execute the JMeter command and capture the return status
-					def jmeterStatus = sh script: jmeterCommand, returnStatus: true
-
-					// Check the return status and fail the pipeline if an error occurred
-					if (jmeterStatus != 0) {
-						error "JMeter execution failed. Check the logs for details."
-					}
-
 					sh "mv results.jtl report-output"
 
 					withCredentials([
@@ -45,6 +36,11 @@ pipeline {
 					}
 					
 					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > /dev/null"
+
+					perfReport sourceDataFiles: 'report-output/results.jtl', errorFailedThreshold : 1
+					if (currentBuild.result == "FAILURE") {
+                        error("JMeter test failed, stopping the pipeline.")
+                    }
 				}
 			}
 		}
