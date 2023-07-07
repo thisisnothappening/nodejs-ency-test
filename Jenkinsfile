@@ -26,6 +26,8 @@ pipeline {
 					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
 					sh "mv results.jtl report-output"
 
+					archiveArtifacts 'report-output/**'
+
 					withCredentials([
 						string(credentialsId: 'aws-access-key-id', variable: 'KEY_ID'),
 						string(credentialsId: 'aws-secret-access-key', variable: 'SECRET_KEY')
@@ -91,24 +93,20 @@ pipeline {
                         '
                     '''
 				}
+				emailext subject: "Pipeline Success \uD83C\uDF08 \u2728",
+					to: "negoiupaulica21@gmail.com",
+					attachLog: true,
+					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
 		    }
+
 		}
 	}
 	post {
-		always {
-            archiveArtifacts 'report-output/**'
-        }
-	// 	failure {
-	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
-	// 				to: "negoiupaulica21@gmail.com",
-	// 				attachLog: true,
-	// 				body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed. \uD83D\uDE2D"
-	// 	}
-	// 	success {
-	// 		emailext subject: "Pipeline Success \uD83C\uDF08 \u2728",
-	// 				to: "negoiupaulica21@gmail.com",
-	// 				attachLog: true,
-	// 				body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
-	// 	}
+		failure {
+			emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
+					to: "negoiupaulica21@gmail.com",
+					attachLog: true,
+					body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tThe Jenkins pipeline has failed. \uD83D\uDE2D"
+		}
 	}
 }
