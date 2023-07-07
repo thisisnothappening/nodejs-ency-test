@@ -94,6 +94,14 @@ pipeline {
 	post {
 		always {
             archiveArtifacts 'report-output/**'
+			publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'report-output',
+                reportFiles: 'index.html',
+                reportName: 'JMeter Report'
+            ])
         }
 	// 	failure {
 	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
