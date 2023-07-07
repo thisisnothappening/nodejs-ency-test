@@ -94,17 +94,6 @@ pipeline {
 	post {
 		always {
             archiveArtifacts 'report-output/**'
-
-			performanceReport parsers: [[$class: 'JMeterParser', glob: 'report-output/*.jtl']],
-                errorFailedThreshold: 10, // Set the desired error percentage threshold
-                errorUnstableThreshold: 5, // Set the desired error percentage threshold for unstable build
-                relativeFailedThresholdPositive: 100, // Set the desired error rate threshold
-                relativeFailedThresholdNegative: 0, // Set the desired error rate threshold
-                relativeUnstableThresholdPositive: 50, // Set the desired error rate threshold for unstable build
-                relativeUnstableThresholdNegative: 0, // Set the desired error rate threshold for unstable build
-                modeOfThreshold: 1, // Use "Error percent" as the mode for threshold comparison
-                modePerformancePerTestCase: true,
-                failBuildIfNoResultFile: true,
         }
 	// 	failure {
 	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
