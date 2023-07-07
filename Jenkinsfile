@@ -37,7 +37,7 @@ pipeline {
 					
 					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > /dev/null"
 
-					perfReport sourceDataFiles: 'report-output/results.jtl'
+					perfReport sourceDataFiles: 'report-output/results.jtl', errorFailedThreshold : 1
 				}
 			}
 		}
