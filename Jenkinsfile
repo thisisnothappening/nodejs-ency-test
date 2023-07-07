@@ -94,6 +94,10 @@ pipeline {
 	post {
 		always {
             archiveArtifacts 'report-output/**'
+
+			perfReportError()
+            perfReportErrors()
+            perfReportResponseTime { errorThreshold: '1000', unstableThreshold: '500' }
         }
 	// 	failure {
 	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
