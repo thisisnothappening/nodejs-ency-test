@@ -23,7 +23,7 @@ pipeline {
 			steps {
 				script {
 					sh "npm test"
-
+					
 					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
 					sh "mv results.jtl report-output"
 
@@ -49,7 +49,7 @@ pipeline {
 		}
 		stage("Push Image") {
 			when {
-                branch 'pain'
+                branch 'main'
             }
 			steps {
 				script {
@@ -77,7 +77,7 @@ pipeline {
 		}
 		stage("Deploy") {
 			when {
-                branch 'pain'
+                branch 'main'
             }
 		    steps{
 		        withCredentials([
