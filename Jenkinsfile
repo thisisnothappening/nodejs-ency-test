@@ -23,8 +23,8 @@ pipeline {
 			steps {
 				script {
 					sh "npm test"
-					sh "jmeter -n -t welcomepedia.jmx -l results.csv"
-					// sh "mv results.jtl report-output"
+					sh "jmeter -n -t welcomepedia.jmx -l results.jtl -e -o report-output"
+					sh "mv results.jtl report-output"
 
 					withCredentials([
 						string(credentialsId: 'aws-access-key-id', variable: 'KEY_ID'),
@@ -35,10 +35,9 @@ pipeline {
 						sh 'aws configure set region eu-north-1'
 					}
 					
-					// sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > /dev/null"
+					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > /dev/null"
 
-					// perfReport 'report-output/results.jtl'
-					perfReport 'results.csv'
+					perfReport 'report-output/results.jtl'
 				}
 			}
 		}
@@ -92,7 +91,10 @@ pipeline {
 		    }
 		}
 	}
-	// post {
+	post {
+		always {
+            archiveArtifacts 'report-output/**'
+        }
 	// 	failure {
 	// 		emailext subject: "Pipeline Failed \u26A0\ufe0f \uD83D\uDD25",
 	// 				to: "negoiupaulica21@gmail.com",
@@ -105,5 +107,5 @@ pipeline {
 	// 				attachLog: true,
 	// 				body: "Build Tag:\t${env.BUILD_TAG}\n\nMessage:\tYour Docker image with tag '${version}' has been deployed! \uD83D\uDE00"
 	// 	}
-	// }
+	}
 }
