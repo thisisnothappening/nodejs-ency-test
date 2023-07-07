@@ -36,8 +36,6 @@ pipeline {
 					}
 					
 					sh "aws s3 cp --recursive report-output/ s3://nodejs-ency-jmeter-test-results/report-output-${env.BUILD_ID}/ > /dev/null"
-
-					perfReport 'report-output/results.jtl'
 				}
 			}
 		}
@@ -94,6 +92,7 @@ pipeline {
 	post {
 		always {
             archiveArtifacts 'report-output/**'
+
 			publishHTML(target: [
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
